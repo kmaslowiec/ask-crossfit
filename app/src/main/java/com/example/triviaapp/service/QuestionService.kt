@@ -1,6 +1,6 @@
 package com.example.triviaapp.service
 
-import com.example.triviaapp.model.QuestionsItem
+import com.example.triviaapp.model.Questions
 import retrofit2.http.GET
 import javax.inject.Singleton
 
@@ -8,5 +8,5 @@ import javax.inject.Singleton
 interface QuestionService {
 
     @GET("crossfit_questions.json")
-    suspend fun getAllQuestions(): ArrayList<QuestionsItem>
+    suspend fun getAllQuestions(): Questions
 }
