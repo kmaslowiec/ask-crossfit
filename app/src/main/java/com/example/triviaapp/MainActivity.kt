@@ -26,9 +26,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             TriviaAppTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Greeting()
+                    AppContent()
                 }
             }
         }
@@ -36,7 +35,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting() {
+fun AppContent() {
     val questionsViewmModel: QuestionViewModel = viewModel()
     questionsViewmModel.fetchQuestions()
     val list by questionsViewmModel.question.observeAsState()
@@ -49,8 +48,8 @@ fun Greeting() {
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun AppPreview() {
     TriviaAppTheme {
-
+        AppContent()
     }
 }
