@@ -1,8 +1,10 @@
 package com.example.triviaapp.screens.viewmodel
 
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.triviaapp.data.DataOrException
 import com.example.triviaapp.model.Questions
 import com.example.triviaapp.repository.QuestionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,12 +14,20 @@ import javax.inject.Inject
 @HiltViewModel
 class QuestionViewModel @Inject constructor(private val repository: QuestionRepository) : ViewModel() {
 
-    private val _questions = MutableLiveData<Questions>()
-    val question = _questions
+    val data: MutableState<DataOrException<Questions, Boolean, Exception>> =
+        mutableStateOf(DataOrException(null, true, Exception("")))
 
-    fun fetchQuestions() {
+    init {
+        getAllQuestions()
+    }
+
+    private fun getAllQuestions() {
         viewModelScope.launch {
-            question.value = repository.getQuestions().data
+            data.value.loading = true
+            data.value = repository.getQuestions()
+            if (data.value.data.toString().isNotEmpty()) {
+                data.value.loading = false
+            }
         }
     }
 }
