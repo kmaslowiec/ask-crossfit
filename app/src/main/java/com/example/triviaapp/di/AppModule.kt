@@ -13,9 +13,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
     @Singleton
     @Provides
-    fun provideQuestionApi() = Retrofit.Builder()
+    fun provideQuestionApi(): QuestionService = Retrofit.Builder()
         .baseUrl(NetworkConstants.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()

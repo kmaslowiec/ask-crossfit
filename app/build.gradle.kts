@@ -50,6 +50,7 @@ android {
 
 }
 
+@Suppress("GradleDependency")
 dependencies {
 
     implementation("androidx.room:room-runtime:2.5.2")
@@ -77,8 +78,9 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.5.1")
     implementation("androidx.navigation:navigation-compose:2.7.2")
     implementation("io.coil-kt:coil-compose:2.4.0")
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
