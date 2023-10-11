@@ -3,9 +3,11 @@ package com.example.triviaapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.triviaapp.navigation.AppNavigation
@@ -20,17 +22,18 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MyApp {
-                AppNavigation()
+                AppNavigation(modifier = Modifier.padding(it))
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyApp(content: @Composable () -> Unit) {
+fun MyApp(content: @Composable (PaddingValues) -> Unit) {
     TriviaAppTheme {
-        Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-            content()
+        Scaffold(containerColor = MaterialTheme.colorScheme.background) { padding ->
+            content(padding)
         }
     }
 }
