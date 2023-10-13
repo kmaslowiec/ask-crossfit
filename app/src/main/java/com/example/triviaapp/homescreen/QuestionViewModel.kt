@@ -1,4 +1,4 @@
-package com.example.triviaapp.screens.viewmodel
+package com.example.triviaapp.homescreen
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

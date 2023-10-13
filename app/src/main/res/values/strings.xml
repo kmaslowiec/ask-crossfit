@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">TriviaApp</string>
+    <string name="app_name">Ask Crossfit</string>
+
+    <string name="buttonNextQuestions">Next</string>
 </resources>
