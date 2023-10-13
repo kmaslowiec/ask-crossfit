@@ -31,8 +31,8 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyApp(content: @Composable (PaddingValues) -> Unit) {
-    TriviaAppTheme {
-        Scaffold(containerColor = MaterialTheme.colorScheme.background) { padding ->
+    TriviaAppTheme(dynamicColor = false) {
+        Scaffold(containerColor = MaterialTheme.colorScheme.primary) { padding ->
             content(padding)
         }
     }
