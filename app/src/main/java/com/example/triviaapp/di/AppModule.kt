@@ -1,7 +1,8 @@
 package com.example.triviaapp.di
 
-import com.example.triviaapp.common.MersenneTwister
 import com.example.triviaapp.common.NetworkConstants
+import com.example.triviaapp.domain.MersenneTwister
+import com.example.triviaapp.domain.ShuffleEngine
 import com.example.triviaapp.service.QuestionService
 import dagger.Module
 import dagger.Provides
@@ -17,7 +18,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideTwister(): MersenneTwister = MersenneTwister()
+    fun provideTwister(): ShuffleEngine = MersenneTwister()
 
     @Singleton
     @Provides
