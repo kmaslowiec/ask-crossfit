@@ -1,6 +1,6 @@
-package com.example.triviaapp.common
+package com.example.triviaapp.domain
 
-class MersenneTwister(seed: Int = System.currentTimeMillis().toInt()) {
+class MersenneTwister(seed: Int = System.currentTimeMillis().toInt()) : ShuffleEngine {
     private var mt = IntArray(N)
     private var index = N + 1
 
@@ -16,7 +16,7 @@ class MersenneTwister(seed: Int = System.currentTimeMillis().toInt()) {
         index = N
     }
 
-    fun nextInt(): Int {
+    private fun nextInt(): Int {
         if (index >= N) {
             if (index > N) {
                 throw RuntimeException("Generator was never initialized")
@@ -35,10 +35,12 @@ class MersenneTwister(seed: Int = System.currentTimeMillis().toInt()) {
         return y
     }
 
-    fun nextInt(from: Int, until: Int): Int {
+    private fun nextInt(from: Int, until: Int): Int {
         val randomInt = nextInt()
         return (randomInt.toLong() and 0xFFFFFFFFL).rem(until - from).toInt() + from
     }
+
+    override fun getRandomNumber(sumOfQuestions: Int) = nextInt(0, sumOfQuestions)
 
     private fun twist() {
         for (i in 0 until N) {
