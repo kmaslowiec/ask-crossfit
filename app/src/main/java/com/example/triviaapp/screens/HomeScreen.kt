@@ -6,20 +6,27 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.ParagraphStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextIndent
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.triviaapp.model.QuestionsItem
 import com.example.triviaapp.screens.viewmodel.QuestionViewModel
 import com.example.triviaapp.ui.theme.Typography
 
 @Composable
 fun HomeScreen(viewModel: QuestionViewModel) {
-    val questions = viewModel.data.value.data?.toMutableList()
+    val questions = viewModel.data.value.data?.toList()
 
     if (viewModel.data.value.loading == true) {
-        Log.d("Bughunt", "... is loading")
+        Log.i("CrossFitQA", "... is loading")
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -28,31 +35,51 @@ fun HomeScreen(viewModel: QuestionViewModel) {
             CircularProgressIndicator()
         }
     } else {
-        Log.d("BUGHUNT", "Question size ${questions?.size}")
-        HomeScreenContent()
+        Log.i("CrossFitQA", "Question size ${questions?.size}")
+        HomeScreenContent(questions, viewModel.generateQuestionNumber())
     }
 }
 
 @Composable
-fun HomeScreenContent() {
+fun HomeScreenContent(questions: List<QuestionsItem>?, randomNum: Int) {
     Column {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .weight(1f),
+                .weight(1f)
+                .background(MaterialTheme.colorScheme.primary),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Text(text = "Question 1/100", style = Typography.labelLarge)
+            QuestionTracker(questionNumber = randomNum, allQuestionNumber = questions?.size ?: 0)
         }
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .weight(3f)
-                .background(Color.DarkGray),
+                .background(MaterialTheme.colorScheme.primary),
         ) {
 
         }
     }
+}
 
+@Composable
+fun QuestionTracker(questionNumber: Int, allQuestionNumber: Int) {
+    Text(text = buildAnnotatedString {
+        withStyle(style = ParagraphStyle(textIndent = TextIndent.None)) {
+            withStyle(style = Typography.labelLarge.toSpanStyle().copy(color = Color.White)) {
+                append("$questionNumber / ")
+            }
+            withStyle(style = Typography.labelLarge.toSpanStyle().copy(color = Color.Gray)) {
+                append("$allQuestionNumber")
+            }
+        }
+    })
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HomeScreenPreview() {
+    HomeScreenContent(questions = emptyList(), randomNum = 0)
 }
