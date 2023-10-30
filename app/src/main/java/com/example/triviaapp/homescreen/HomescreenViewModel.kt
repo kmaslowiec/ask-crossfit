@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class QuestionViewModel @Inject constructor(private val repository: QuestionRepository, private val twister: ShuffleEngine) : ViewModel() {
+class HomescreenViewModel @Inject constructor(private val repository: QuestionRepository, private val twister: ShuffleEngine) : ViewModel() {
 
     val data: MutableState<DataOrException<Questions, Boolean, Exception>> =
         mutableStateOf(DataOrException(null, true, Exception("")))
