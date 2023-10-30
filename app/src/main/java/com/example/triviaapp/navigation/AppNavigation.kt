@@ -17,10 +17,10 @@ fun AppNavigation(modifier: Modifier) {
         modifier = modifier,
         contentAlignment = Alignment.TopCenter,
         navController = navController,
-        startDestination = "Home Screen",
+        startDestination = AppScreens.HomeScreen.name,
     )
     {
-        composable(route = "Home Screen") {
+        composable(route = AppScreens.HomeScreen.name) {
             HomeScreen(viewModel = hiltViewModel())
         }
     }
