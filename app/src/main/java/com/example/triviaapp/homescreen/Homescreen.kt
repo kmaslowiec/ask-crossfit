@@ -26,7 +26,7 @@ import com.example.triviaapp.model.QuestionsItem
 import com.example.triviaapp.ui.theme.Typography
 
 @Composable
-fun HomeScreen(viewModel: QuestionViewModel) {
+fun HomeScreen(viewModel: HomescreenViewModel) {
 
     var currentQuestionIndex by rememberSaveable {
         mutableIntStateOf(viewModel.generateQuestionNumber())
