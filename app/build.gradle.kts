@@ -83,6 +83,7 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.2")
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")
     testImplementation("junit:junit:4.13.2")

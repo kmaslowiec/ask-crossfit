@@ -43,12 +43,6 @@ fun QuestionTracker(questionNumber: Int, allQuestionNumber: Int) {
     })
 }
 
-@Preview
-@Composable
-fun QuestionTrackerPreview() {
-    QuestionTracker(questionNumber = 1, allQuestionNumber = 100)
-}
-
 @Composable
 fun SeperationLine(pathEffect: PathEffect) {
     Canvas(
@@ -66,18 +60,13 @@ fun SeperationLine(pathEffect: PathEffect) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SeperationLinePreview() {
-    SeperationLine(pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), phase = 0f))
-}
-
 @Composable
 fun AnswerRadioButtons(
     answers: List<String>,
     correctAnswerIndex: Int,
     answer: String,
     updateSelectedAnswer: (String) -> Unit,
+    saveNumOfWrongAnswers: () -> Unit,
     selectedAnswer: String
 ) {
 
@@ -88,7 +77,10 @@ fun AnswerRadioButtons(
                 .padding(16.dp)
                 .selectable(
                     selected = (text == selectedAnswer),
-                    onClick = { updateSelectedAnswer(text) }
+                    onClick = {
+                        updateSelectedAnswer(text)
+                        saveNumOfWrongAnswers()
+                    }
                 )
                 .clip(RoundedCornerShape(12.dp))
                 .border(
@@ -99,13 +91,19 @@ fun AnswerRadioButtons(
                     )
                 )
                 .background(
-                    color = if (selectedAnswer == answer && correctAnswerIndex == index) MaterialTheme.colorScheme.background
-                    else Color.Transparent
+                    color = if (selectedAnswer == answer && correctAnswerIndex == index) {
+                        MaterialTheme.colorScheme.background
+                    } else {
+                        Color.Transparent
+                    }
                 )
         ) {
             RadioButton(
                 selected = (text == selectedAnswer),
-                onClick = { updateSelectedAnswer(text) },
+                onClick = {
+                    updateSelectedAnswer(text)
+                    saveNumOfWrongAnswers()
+                },
                 colors = RadioButtonDefaults.colors(selectedColor = Color.Magenta)
 
             )
@@ -122,12 +120,25 @@ fun AnswerRadioButtons(
 
 @Preview(showBackground = true)
 @Composable
+fun SeperationLinePreview() {
+    SeperationLine(pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), phase = 0f))
+}
+
+@Preview(showBackground = true)
+@Composable
 fun AnswerRadioButtonsPreview() {
     AnswerRadioButtons(
         answers = listOf("Answer one"),
         correctAnswerIndex = 1,
         answer = "Answer one",
         updateSelectedAnswer = {},
-        selectedAnswer = ""
+        selectedAnswer = "",
+        saveNumOfWrongAnswers = {}
     )
+}
+
+@Preview
+@Composable
+fun QuestionTrackerPreview() {
+    QuestionTracker(questionNumber = 1, allQuestionNumber = 100)
 }
