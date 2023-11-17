@@ -30,7 +30,7 @@ class HomescreenViewModelTest {
     }
 
     @Test
-    fun `getQuestions returns data on successful API call`() {
+    fun `get an int number WHEN generateQuestionIsCalled`() {
         val repository: QuestionRepository = mockk()
         val twister: ShuffleEngine = mockk()
         val statsRepository: StatsRepository = mockk()
