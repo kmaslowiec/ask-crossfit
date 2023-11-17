@@ -67,6 +67,9 @@ fun HomeScreen(viewModel: HomescreenViewModel) {
                 selectedAnswer = ""
             },
             updateSelectedAnswer = { selectedAnswer = it },
+            saveNumOfWrongAnswers = {
+                if (selectedAnswer != currentQuestion.answer) viewModel.addWrongAnswerToStats()
+            },
             selectedAnswer = selectedAnswer,
         )
     }
@@ -80,9 +83,9 @@ fun HomeScreenContent(
     onClickButton: () -> Unit,
     updateSelectedAnswer: (String) -> Unit,
     selectedAnswer: String,
+    saveNumOfWrongAnswers: () -> Unit
 ) {
     val pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), phase = 0f)
-    val correctAnswerIndex = question.choices.indexOf(question.answer)
 
     Column {
         Column(
@@ -113,10 +116,11 @@ fun HomeScreenContent(
 
             AnswerRadioButtons(
                 answers = question.choices,
-                correctAnswerIndex = correctAnswerIndex,
+                correctAnswerIndex = question.choices.indexOf(question.answer),
                 answer = question.answer,
                 updateSelectedAnswer = updateSelectedAnswer,
                 selectedAnswer = selectedAnswer,
+                saveNumOfWrongAnswers = saveNumOfWrongAnswers
             )
 
             Button(
@@ -144,6 +148,7 @@ fun HomeScreenPreview() {
         currentQuestion = 0,
         onClickButton = {},
         updateSelectedAnswer = {},
-        selectedAnswer = ""
+        selectedAnswer = "",
+        saveNumOfWrongAnswers = {}
     )
 }

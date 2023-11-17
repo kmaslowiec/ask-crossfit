@@ -8,12 +8,17 @@ import com.example.triviaapp.data.DataOrException
 import com.example.triviaapp.domain.ShuffleEngine
 import com.example.triviaapp.model.Questions
 import com.example.triviaapp.repository.QuestionRepository
+import com.example.triviaapp.repository.StatsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomescreenViewModel @Inject constructor(private val repository: QuestionRepository, private val twister: ShuffleEngine) : ViewModel() {
+class HomescreenViewModel @Inject constructor(
+    private val repository: QuestionRepository,
+    private val statsRepository: StatsRepository,
+    private val twister: ShuffleEngine
+) : ViewModel() {
 
     val data: MutableState<DataOrException<Questions, Boolean, Exception>> =
         mutableStateOf(DataOrException(null, true, Exception("")))
@@ -36,4 +41,9 @@ class HomescreenViewModel @Inject constructor(private val repository: QuestionRe
         return twister.getRandomNumber(100)
     }
 
+    fun addWrongAnswerToStats() {
+        viewModelScope.launch {
+            statsRepository.incrementWrongAnswersNumber()
+        }
+    }
 }

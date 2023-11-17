@@ -33,7 +33,8 @@ class HomescreenViewModelTest {
     fun `getQuestions returns data on successful API call`() {
         val repository: QuestionRepository = mockk()
         val twister: ShuffleEngine = mockk()
-        val viewModel = HomescreenViewModel(repository, twister)
+        val statsRepository: StatsRepository = mockk()
+        val viewModel = HomescreenViewModel(repository, statsRepository, twister)
         every { twister.getRandomNumber(100) } returns 10
 
         val tested = viewModel.generateQuestionNumber()
