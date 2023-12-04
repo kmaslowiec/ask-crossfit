@@ -9,11 +9,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,17 +23,7 @@ import com.example.triviaapp.ui.theme.Typography
 @Composable
 fun HomeScreen(viewModel: HomescreenViewModel) {
 
-    var currentQuestionIndex by rememberSaveable {
-        mutableIntStateOf(viewModel.generateQuestionNumber())
-    }
-    var currentQuestionNumber by rememberSaveable {
-        mutableIntStateOf(1)
-    }
-    var selectedAnswer by rememberSaveable {
-        mutableStateOf("")
-    }
-
-    val currentQuestion = viewModel.data.value.data?.get(currentQuestionIndex) ?: QuestionsItem(
+    val currentQuestion = viewModel.data.value.data?.get(viewModel.currentQuestionIndex.value) ?: QuestionsItem(
         answer = "empty answer",
         category = "empty category",
         choices = emptyList(),
@@ -47,7 +32,7 @@ fun HomeScreen(viewModel: HomescreenViewModel) {
     val numberOfQuestions = viewModel.data.value.data?.size ?: 0
 
     if (viewModel.data.value.loading == true) {
-        Log.i("CrossFitQA", "... is loading")
+        Log.i("AskGpt", "... is loading")
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -56,21 +41,21 @@ fun HomeScreen(viewModel: HomescreenViewModel) {
             CircularProgressIndicator()
         }
     } else {
-        Log.i("CrossFitQA", "Question size ${viewModel.data.value.data?.size}")
+        Log.i("AskGpt", "Question size ${viewModel.data.value.data?.size}")
         HomeScreenContent(
             question = currentQuestion,
-            currentQuestion = currentQuestionNumber,
+            currentQuestion = viewModel.currentQuestionNumber.value,
             numberOfQuestions = numberOfQuestions,
             onClickButton = {
-                currentQuestionIndex = viewModel.generateQuestionNumber()
-                if (currentQuestionNumber < numberOfQuestions) currentQuestionNumber++
-                selectedAnswer = ""
+                viewModel.updateCurrentQuestionIndex()
+                if (viewModel.currentQuestionNumber.value < numberOfQuestions) viewModel.increaseQuestionNumber()
+                viewModel.updateSelectedAnswer("")
             },
-            updateSelectedAnswer = { selectedAnswer = it },
+            updateSelectedAnswer = { viewModel.updateSelectedAnswer(it) },
             saveNumOfWrongAnswers = {
-                if (selectedAnswer != currentQuestion.answer) viewModel.addWrongAnswerToStats()
+                if (viewModel.selectedAnswer.value != currentQuestion.answer) viewModel.addWrongAnswerToStats()
             },
-            selectedAnswer = selectedAnswer,
+            selectedAnswer = viewModel.selectedAnswer.value,
         )
     }
 }

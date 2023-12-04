@@ -1,6 +1,8 @@
 package com.example.triviaapp.homescreen
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,8 +25,40 @@ class HomescreenViewModel @Inject constructor(
     val data: MutableState<DataOrException<Questions, Boolean, Exception>> =
         mutableStateOf(DataOrException(null, true, Exception("")))
 
+    private val _currentQuestionIndex = mutableIntStateOf(generateQuestionNumber())
+    var currentQuestionIndex: State<Int> = _currentQuestionIndex
+
+    private val _currentQuestionNumber = mutableIntStateOf(1)
+    var currentQuestionNumber: State<Int> = _currentQuestionNumber
+
+    private val _selectedAnswer = mutableStateOf("")
+    var selectedAnswer: State<String> = _selectedAnswer
+
     init {
         getAllQuestions()
+    }
+
+    fun updateSelectedAnswer(newAnswer: String) {
+        _selectedAnswer.value = newAnswer
+    }
+
+    fun updateCurrentQuestionIndex() {
+        currentQuestionIndex = mutableIntStateOf(generateQuestionNumber())
+    }
+
+    fun generateQuestionNumber(): Int {
+        return twister.getRandomNumber(100)
+    }
+
+    fun increaseQuestionNumber() {
+        _currentQuestionNumber.intValue++
+    }
+
+
+    fun addWrongAnswerToStats() {
+        viewModelScope.launch {
+            statsRepository.incrementWrongAnswersNumber()
+        }
     }
 
     private fun getAllQuestions() {
@@ -34,16 +68,6 @@ class HomescreenViewModel @Inject constructor(
             if (data.value.data.toString().isNotEmpty()) {
                 data.value.loading = false
             }
-        }
-    }
-
-    fun generateQuestionNumber(): Int {
-        return twister.getRandomNumber(100)
-    }
-
-    fun addWrongAnswerToStats() {
-        viewModelScope.launch {
-            statsRepository.incrementWrongAnswersNumber()
         }
     }
 }
