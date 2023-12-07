@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.TriviaApp" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.TriviaApp" parent="Theme.AppCompat.NoActionBar" />
+
+    <style name="SplashScreenTheme" parent="@style/Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/app_blue</item>
+        <item name="windowSplashScreenAnimatedIcon">"@drawable/ask_crossfit_logo"</item>
+        <item name="postSplashScreenTheme">@style/Theme.TriviaApp</item>
+    </style>
 </resources>
