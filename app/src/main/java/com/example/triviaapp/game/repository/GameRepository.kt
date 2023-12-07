@@ -1,11 +1,10 @@
-package com.example.triviaapp.repository
+package com.example.triviaapp.game.repository
 
-import com.example.triviaapp.data.DataOrException
-import com.example.triviaapp.model.Questions
-import com.example.triviaapp.service.QuestionService
+import com.example.triviaapp.game.model.Questions
+import com.example.triviaapp.game.api.GameApi
 import javax.inject.Inject
 
-class QuestionRepository @Inject constructor(private val api: QuestionService) {
+class GameRepository @Inject constructor(private val api: GameApi) {
 
     private val dataOrException = DataOrException<Questions, Boolean, Exception>()
 

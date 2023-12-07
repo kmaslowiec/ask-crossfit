@@ -1,7 +1,9 @@
-package com.example.triviaapp.repository
+package com.example.triviaapp.repository.game.viewmodel
 
-import com.example.triviaapp.domain.ShuffleEngine
-import com.example.triviaapp.homescreen.HomescreenViewModel
+import com.example.triviaapp.common.domain.ShuffleEngine
+import com.example.triviaapp.game.viewmodel.GameViewModel
+import com.example.triviaapp.game.repository.GameRepository
+import com.example.triviaapp.common.repository.StatsRepository
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -18,13 +20,13 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class HomescreenViewModelTest {
+class GameViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
-    private lateinit var repository: QuestionRepository
+    private lateinit var repository: GameRepository
     private lateinit var twister: ShuffleEngine
     private lateinit var statsRepository: StatsRepository
-    private lateinit var viewModel: HomescreenViewModel
+    private lateinit var viewModel: GameViewModel
 
     @BeforeEach
     fun before() {
@@ -32,7 +34,7 @@ class HomescreenViewModelTest {
         repository = mockk(relaxed = true)
         twister = mockk(relaxed = true)
         statsRepository = mockk(relaxed = true)
-        viewModel = HomescreenViewModel(repository, statsRepository, twister)
+        viewModel = GameViewModel(repository, statsRepository, twister)
     }
 
     @AfterEach

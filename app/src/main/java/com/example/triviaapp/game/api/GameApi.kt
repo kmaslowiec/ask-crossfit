@@ -1,11 +1,11 @@
-package com.example.triviaapp.service
+package com.example.triviaapp.game.api
 
-import com.example.triviaapp.model.Questions
+import com.example.triviaapp.game.model.Questions
 import retrofit2.http.GET
 import javax.inject.Singleton
 
 @Singleton
-interface QuestionService {
+interface GameApi {
 
     @GET("crossfit_questions.json")
     suspend fun getAllQuestions(): Questions
