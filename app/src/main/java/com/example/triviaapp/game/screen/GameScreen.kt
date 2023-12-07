@@ -1,4 +1,4 @@
-package com.example.triviaapp.homescreen
+package com.example.triviaapp.game.screen
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -17,11 +17,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.triviaapp.R
-import com.example.triviaapp.model.QuestionsItem
+import com.example.triviaapp.game.component.AnswerRadioButtons
+import com.example.triviaapp.game.component.QuestionTracker
+import com.example.triviaapp.game.component.SeperationLine
+import com.example.triviaapp.game.model.QuestionsItem
+import com.example.triviaapp.game.viewmodel.GameViewModel
 import com.example.triviaapp.ui.theme.Typography
 
 @Composable
-fun HomeScreen(viewModel: HomescreenViewModel) {
+fun HomeScreen(viewModel: GameViewModel) {
 
     val currentQuestion = viewModel.data.value.data?.get(viewModel.currentQuestionIndex.value) ?: QuestionsItem(
         answer = "empty answer",

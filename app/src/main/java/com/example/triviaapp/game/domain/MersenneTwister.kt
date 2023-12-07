@@ -1,4 +1,6 @@
-package com.example.triviaapp.domain
+package com.example.triviaapp.game.domain
+
+import com.example.triviaapp.common.domain.ShuffleEngine
 
 class MersenneTwister(seed: Int = System.currentTimeMillis().toInt()) : ShuffleEngine {
     private var mt = IntArray(N)

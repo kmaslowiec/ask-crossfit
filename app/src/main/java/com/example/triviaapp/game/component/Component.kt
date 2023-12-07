@@ -1,4 +1,4 @@
-package com.example.triviaapp.homescreen
+package com.example.triviaapp.game.component
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
