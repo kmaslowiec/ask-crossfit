@@ -1,14 +1,14 @@
-package com.example.triviaapp.di
+package com.example.triviaapp.common.di
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.triviaapp.common.DataStoreConstants
-import com.example.triviaapp.common.NetworkConstants
-import com.example.triviaapp.domain.MersenneTwister
-import com.example.triviaapp.domain.ShuffleEngine
-import com.example.triviaapp.service.QuestionService
+import com.example.triviaapp.common.constants.DataStoreConstants
+import com.example.triviaapp.common.constants.NetworkConstants
+import com.example.triviaapp.game.domain.MersenneTwister
+import com.example.triviaapp.common.domain.ShuffleEngine
+import com.example.triviaapp.game.api.GameApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,11 +30,11 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideQuestionApi(): QuestionService = Retrofit.Builder()
+    fun provideQuestionApi(): GameApi = Retrofit.Builder()
         .baseUrl(NetworkConstants.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-        .create(QuestionService::class.java)
+        .create(GameApi::class.java)
 
     @Provides
     @Singleton

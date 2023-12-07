@@ -1,4 +1,4 @@
-package com.example.triviaapp.homescreen
+package com.example.triviaapp.game.viewmodel
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -6,18 +6,18 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.triviaapp.data.DataOrException
-import com.example.triviaapp.domain.ShuffleEngine
-import com.example.triviaapp.model.Questions
-import com.example.triviaapp.repository.QuestionRepository
-import com.example.triviaapp.repository.StatsRepository
+import com.example.triviaapp.game.repository.DataOrException
+import com.example.triviaapp.common.domain.ShuffleEngine
+import com.example.triviaapp.game.model.Questions
+import com.example.triviaapp.game.repository.GameRepository
+import com.example.triviaapp.common.repository.StatsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomescreenViewModel @Inject constructor(
-    private val repository: QuestionRepository,
+class GameViewModel @Inject constructor(
+    private val repository: GameRepository,
     private val statsRepository: StatsRepository,
     private val twister: ShuffleEngine
 ) : ViewModel() {

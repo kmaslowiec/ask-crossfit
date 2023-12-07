@@ -1,4 +1,4 @@
-package com.example.triviaapp.repository
+package com.example.triviaapp.common.repository
 
 import android.util.Log
 import androidx.datastore.core.DataStore

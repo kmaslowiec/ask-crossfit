@@ -1,4 +1,4 @@
-package com.example.triviaapp.data
+package com.example.triviaapp.game.repository
 
 data class DataOrException<T, Boolean, E : Exception>(
     var data: T? = null,

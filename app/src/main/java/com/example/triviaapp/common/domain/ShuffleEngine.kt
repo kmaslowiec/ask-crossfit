@@ -1,4 +1,4 @@
-package com.example.triviaapp.domain
+package com.example.triviaapp.common.domain
 
 interface ShuffleEngine {
 

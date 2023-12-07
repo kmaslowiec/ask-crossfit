@@ -1,4 +1,4 @@
-package com.example.triviaapp.model
+package com.example.triviaapp.game.model
 
 data class QuestionsItem(
     val answer: String,
