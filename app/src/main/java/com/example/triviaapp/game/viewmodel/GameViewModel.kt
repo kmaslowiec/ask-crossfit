@@ -1,17 +1,17 @@
 package com.example.triviaapp.game.viewmodel
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.triviaapp.game.repository.DataOrException
 import com.example.triviaapp.common.domain.ShuffleEngine
-import com.example.triviaapp.game.model.Questions
-import com.example.triviaapp.game.repository.GameRepository
 import com.example.triviaapp.common.repository.StatsRepository
+import com.example.triviaapp.game.model.QuestionsState
+import com.example.triviaapp.game.repository.GameRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,8 +22,8 @@ class GameViewModel @Inject constructor(
     private val twister: ShuffleEngine
 ) : ViewModel() {
 
-    val data: MutableState<DataOrException<Questions, Boolean, Exception>> =
-        mutableStateOf(DataOrException(null, true, Exception("")))
+    private val _questionsState = MutableStateFlow<QuestionsState>(QuestionsState.Loading)
+    val questionsState = _questionsState.asStateFlow()
 
     private val _currentQuestionIndex = mutableIntStateOf(generateQuestionNumber())
     var currentQuestionIndex: State<Int> = _currentQuestionIndex
@@ -54,7 +54,6 @@ class GameViewModel @Inject constructor(
         _currentQuestionNumber.intValue++
     }
 
-
     fun addWrongAnswerToStats() {
         viewModelScope.launch {
             statsRepository.incrementWrongAnswersNumber()
@@ -63,11 +62,9 @@ class GameViewModel @Inject constructor(
 
     private fun getAllQuestions() {
         viewModelScope.launch {
-            data.value.loading = true
-            data.value = repository.getQuestions()
-            if (data.value.data.toString().isNotEmpty()) {
-                data.value.loading = false
-            }
+            repository.getQuestions().onSuccess {
+                _questionsState.value = QuestionsState.Success(it)
+            }.onFailure { _questionsState.value = QuestionsState.Error }
         }
     }
 }
