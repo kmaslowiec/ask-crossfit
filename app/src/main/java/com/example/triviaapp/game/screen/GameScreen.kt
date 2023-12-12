@@ -9,6 +9,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,46 +22,48 @@ import com.example.triviaapp.game.component.AnswerRadioButtons
 import com.example.triviaapp.game.component.QuestionTracker
 import com.example.triviaapp.game.component.SeperationLine
 import com.example.triviaapp.game.model.QuestionsItem
+import com.example.triviaapp.game.model.QuestionsState.Error
+import com.example.triviaapp.game.model.QuestionsState.Loading
+import com.example.triviaapp.game.model.QuestionsState.Success
 import com.example.triviaapp.game.viewmodel.GameViewModel
 import com.example.triviaapp.ui.theme.Typography
 
 @Composable
-fun HomeScreen(viewModel: GameViewModel) {
-
-    val currentQuestion = viewModel.data.value.data?.get(viewModel.currentQuestionIndex.value) ?: QuestionsItem(
-        answer = "empty answer",
-        category = "empty category",
-        choices = emptyList(),
-        question = ""
-    )
-    val numberOfQuestions = viewModel.data.value.data?.size ?: 0
-
-    if (viewModel.data.value.loading == true) {
-        Log.i("AskGpt", "... is loading")
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            CircularProgressIndicator()
+fun GameScreen(viewModel: GameViewModel) {
+    when (val state = viewModel.questionsState.collectAsState().value) {
+        is Loading -> {
+            Log.i("AskGpt", "... is loading")
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
-    } else {
-        Log.i("AskGpt", "Question size ${viewModel.data.value.data?.size}")
-        HomeScreenContent(
-            question = currentQuestion,
-            currentQuestion = viewModel.currentQuestionNumber.value,
-            numberOfQuestions = numberOfQuestions,
-            onClickButton = {
-                viewModel.updateCurrentQuestionIndex()
-                if (viewModel.currentQuestionNumber.value < numberOfQuestions) viewModel.increaseQuestionNumber()
-                viewModel.updateSelectedAnswer("")
-            },
-            updateSelectedAnswer = { viewModel.updateSelectedAnswer(it) },
-            saveNumOfWrongAnswers = {
-                if (viewModel.selectedAnswer.value != currentQuestion.answer) viewModel.addWrongAnswerToStats()
-            },
-            selectedAnswer = viewModel.selectedAnswer.value,
-        )
+
+        is Success -> {
+            val currentQuestion = state.questions[viewModel.currentQuestionIndex.value]
+            val amountOfQuestions = state.questions.size
+            Log.i("AskGpt", "Question size $amountOfQuestions")
+            HomeScreenContent(
+                question = currentQuestion,
+                currentQuestion = viewModel.currentQuestionNumber.value,
+                numberOfQuestions = amountOfQuestions,
+                onClickButton = {
+                    viewModel.updateCurrentQuestionIndex()
+                    if (viewModel.currentQuestionNumber.value < amountOfQuestions) viewModel.increaseQuestionNumber()
+                    viewModel.updateSelectedAnswer("")
+                },
+                updateSelectedAnswer = { viewModel.updateSelectedAnswer(it) },
+                saveNumOfWrongAnswers = {
+                    if (viewModel.selectedAnswer.value != currentQuestion.answer) viewModel.addWrongAnswerToStats()
+                },
+                selectedAnswer = viewModel.selectedAnswer.value,
+            )
+        }
+
+        is Error -> {}
     }
 }
 

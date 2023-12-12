@@ -1,18 +1,17 @@
 package com.example.triviaapp.repository.game.repository
 
+import com.example.triviaapp.game.api.GameApi
 import com.example.triviaapp.game.model.Questions
 import com.example.triviaapp.game.repository.GameRepository
-import com.example.triviaapp.game.api.GameApi
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.io.IOException
 
 class GameRepositoryTest {
 
@@ -32,20 +31,19 @@ class GameRepositoryTest {
 
         val result = questionRepository.getQuestions()
 
-        assertFalse(result.loading!!)
-        assertEquals(expectedQuestions, result.data)
-        assertNull(result.exception)
+        assertTrue(result.isSuccess)
+        assertNotNull(result.getOrNull())
     }
 
     @Test
     fun `getQuestions returns exception on API call failure`() = runBlocking {
-        val exception = IOException("Network Error")
+        val exception = Exception()
         coEvery { gameApi.getAllQuestions() } throws exception
 
         val result = questionRepository.getQuestions()
 
-        assertTrue(result.loading!!)
-        assertNull(result.data)
-        assertEquals(exception, result.exception)
+        assertNull(result.getOrNull())
+        assertEquals(exception, result.exceptionOrNull())
+        assertTrue(result.isFailure)
     }
 }

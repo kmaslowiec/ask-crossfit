@@ -7,7 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.triviaapp.game.screen.HomeScreen
+import com.example.triviaapp.game.screen.GameScreen
 
 @Composable
 fun AppNavigation(modifier: Modifier) {
@@ -21,7 +21,7 @@ fun AppNavigation(modifier: Modifier) {
     )
     {
         composable(route = AppScreens.HomeScreen.name) {
-            HomeScreen(viewModel = hiltViewModel())
+            GameScreen(viewModel = hiltViewModel())
         }
     }
 }

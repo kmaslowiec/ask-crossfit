@@ -6,9 +6,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.triviaapp.common.constants.DataStoreConstants
 import com.example.triviaapp.common.constants.NetworkConstants
-import com.example.triviaapp.game.domain.MersenneTwister
 import com.example.triviaapp.common.domain.ShuffleEngine
 import com.example.triviaapp.game.api.GameApi
+import com.example.triviaapp.game.domain.MersenneTwister
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
