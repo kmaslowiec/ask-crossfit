@@ -12,6 +12,7 @@ class StatsRepository @Inject constructor(private val dataStore: DataStore<Prefe
     private object PreferencesKeys {
         val NUM_OF_WRONG_ANSWERS = intPreferencesKey("wrong_answers")
     }
+    //TODO move it to the constants
 
     suspend fun incrementWrongAnswersNumber() {
         dataStore.edit { stats ->
